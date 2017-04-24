@@ -11,11 +11,13 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package com.google.codeu.codingchallenge;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.io.*;
 
 final class TestMain {
 
@@ -23,6 +25,7 @@ final class TestMain {
 
     final Tester tests = new Tester();
 
+/*
     tests.add("Empty Object", new Test() {
       @Override
       public void run(JSONFactory factory) throws Exception {
@@ -65,6 +68,99 @@ final class TestMain {
         Asserts.isEqual("doe", nameObj.getString("last"));
       }
     });
+
+    tests.add("Value with extra colons to test", new Test() {
+        @Override
+        public void run(JSONFactory factory) throws Exception {
+
+          final JSONParser parser = factory.parser();
+          final JSON obj = parser.parse("{ \"name:\":{\"fir:::st\" :\":\" \"sam::\", \"l:ast\":\"doe\" } }");
+
+          final JSON nameObj = obj.getObject("name:");
+
+          Asserts.isNotNull(nameObj);
+          Asserts.isEqual("sam::", nameObj.getString("fir:::st"));
+          Asserts.isEqual("doe", nameObj.getString("l:ast"));
+        }
+      });
+    tests.add("Testing extra commas", new Test() {
+        @Override
+        public void run(JSONFactory factory) throws Exception {
+
+          final JSONParser parser = factory.parser();
+          final JSON obj = parser.parse("{ \"name:\":{\"fir:::st\" :: \"sam::\", \"l:ast\":\"doe\" } }");
+
+          final JSON nameObj = obj.getObject("name:");
+
+          Asserts.isNotNull(nameObj);
+          Asserts.isEqual("sam::", nameObj.getString("fir:::st"));
+          Asserts.isEqual("doe", nameObj.getString("l:ast"));
+        }
+      });
+
+    tests.add("Testing escaped characters in strings", new Test() {
+        @Override
+        public void run(JSONFactory factory) throws Exception {
+
+          final JSONParser parser = factory.parser();
+          final JSON obj = parser.parse("{ \"name:\\\"\\\"\\\":{\":\"ir:::st\" , \"sa\\nm::\":\"hello\"  , \"l:ast\":\"doe\" }} }");
+
+          final JSON nameObj = obj.getObject("name:");
+
+          Asserts.isNotNull(nameObj);
+          Asserts.isEqual("sam::", nameObj.getString("fir:::st"));
+          Asserts.isEqual("doe", nameObj.getString("l:ast"));
+        }
+      });
+
+    tests.add("Testing whitespace", new Test() {
+        @Override
+        public void run(JSONFactory factory) throws Exception {
+
+          final JSONParser parser = factory.parser();
+          final JSON obj = parser.parse("{\n \"hello\":\"no\" }");
+          final String s = obj.getString("hello");
+
+          Asserts.isEqual("no", s);
+        }
+      });
+
+      tests.add("Testing characters in the beginnning", new Test() {
+          @Override
+          public void run(JSONFactory factory) throws Exception {
+
+            final JSONParser parser = factory.parser();
+            final JSON obj = parser.parse("fdfsfd{\n \"hello\":\"no\" }");
+            final String s = obj.getString("hello");
+
+            Asserts.isEqual("no", s);
+          }
+        });
+*/
+    Scanner scan;
+    try{scan = new Scanner(new File("C:\\Users\\alex\\test.txt"));
+    int i =1;
+    while(scan.hasNextLine()){
+      System.out.println("nextLine");
+      String next = scan.nextLine();
+      tests.add("Test " + i, new Test(){
+        public void run(JSONFactory factory) throws Exception {
+          final JSONParser parser = factory.parser();
+          final JSON obj = parser.parse(next);
+          ArrayList<String> nameObjects = new ArrayList<String>();
+          ArrayList<String> nameStrings = new ArrayList<String>();
+          obj.getObjects(nameObjects);
+          obj.getStrings(nameStrings);
+          System.out.println("All object names: " + nameObjects);
+          System.out.println("All string names: " + nameStrings);
+        }
+      });
+      i++;
+    }
+  }
+  catch(IOException e){
+    e.printStackTrace();
+  }
 
     tests.run(new JSONFactory(){
       @Override

@@ -11,44 +11,49 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package com.google.codeu.codingchallenge;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 final class MyJSON implements JSON {
-
+	HashMap<String,JSON> objects = new HashMap<String,JSON>();
+	HashMap<String,String> strings = new HashMap<String,String>();
   @Override
   public JSON getObject(String name) {
-    // TODO: implement this
+	if(objects.containsKey(name)){
+		return objects.get(name);
+	}
     return null;
   }
 
   @Override
   public JSON setObject(String name, JSON value) {
-    // TODO: implement this
-    return this;
+		objects.put(name,value);
+		return this;
   }
 
   @Override
   public String getString(String name) {
-    // TODO: implement this
+	  if(strings.containsKey(name)){
+			return strings.get(name);
+	  }
     return null;
   }
 
   @Override
   public JSON setString(String name, String value) {
-    // TODO: implement this
+			strings.put(name,value);
     return this;
   }
 
   @Override
   public void getObjects(Collection<String> names) {
-    // TODO: implement this
+	names.addAll(objects.keySet());
   }
 
   @Override
   public void getStrings(Collection<String> names) {
-    // TODO: implement this
+	  names.addAll(strings.keySet());
   }
 }
