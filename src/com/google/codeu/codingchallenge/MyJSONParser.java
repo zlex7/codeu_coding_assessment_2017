@@ -98,7 +98,7 @@ final class MyJSONParser implements JSONParser {
 	        	String value = getString();
 	        	//System.out.println("string value: " + value);
 	        	numEntries++;
-						if(data.strings.containsKey(key)){
+						if(data.strings.containsKey(key) || data.objects.containsKey()){
 							throw new IOException("duplicate key at index " + index);
 						}
 						else{
@@ -110,7 +110,12 @@ final class MyJSONParser implements JSONParser {
 	        	index++;
 	        //	System.out.println(input.substring(index));
 	        	numEntries++;
+						if(data.strings.containsKey(key) || data.objects.containsKey()){
+							throw new IOException("duplicate key at index " + index);
+						}
+						else{
 	        	data.objects.put(key, parseRecursive());
+					  }
 	        }
 
 	        skipWhiteSpace();
@@ -120,8 +125,8 @@ final class MyJSONParser implements JSONParser {
 
 				index++;
 
-	    System.out.println(data.strings);
-	    System.out.println(data.objects);
+	    //System.out.println(data.strings);
+	    //System.out.println(data.objects);
 
 	    return data;
 
