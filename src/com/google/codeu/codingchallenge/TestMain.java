@@ -25,7 +25,7 @@ final class TestMain {
 
     final Tester tests = new Tester();
 
-/*
+
     tests.add("Empty Object", new Test() {
       @Override
       public void run(JSONFactory factory) throws Exception {
@@ -136,7 +136,8 @@ final class TestMain {
             Asserts.isEqual("no", s);
           }
         });
-*/
+
+/*
     Scanner scan;
     try{scan = new Scanner(new File("C:\\Users\\alex\\test.txt"));
     int i =1;
@@ -161,6 +162,7 @@ final class TestMain {
   catch(IOException e){
     e.printStackTrace();
   }
+  */
 
     tests.run(new JSONFactory(){
       @Override

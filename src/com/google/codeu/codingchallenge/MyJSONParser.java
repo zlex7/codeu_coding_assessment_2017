@@ -22,8 +22,8 @@ final class MyJSONParser implements JSONParser {
   public JSON parse(String in) throws IOException {
     // TODO: implement this
     input = in.trim();
-		System.out.println("----------");
-    System.out.println("input: " + input);
+		//System.out.println("----------");
+  //  System.out.println("input: " + input);
   //System.out.println(input.length());
     index=1;
     /*
