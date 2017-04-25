@@ -39,8 +39,8 @@ final class MyJSONParser implements JSONParser {
 		skipWhiteSpace();
 		if(input.charAt(0)=='{'){
     	JSON data = parseRecursive();
-			if(index<input.length()-1){
-				if(Pattern.compile("\\S").matcher(input.substring(index+1)).find()){
+			if(index<input.length()){
+				if(Pattern.compile("\\S").matcher(input.substring(index)).find()){
 					throw new IOException("extra characters at end of input");
 				}
 				else{
@@ -58,6 +58,8 @@ final class MyJSONParser implements JSONParser {
     }
 
 
+//This method does all of the real work
+//It's a little sketchy, but it seems to work fine
   public JSON parseRecursive() throws IOException{
 	  MyJSON data = new MyJSON();
 	  skipWhiteSpace();
@@ -92,13 +94,17 @@ final class MyJSONParser implements JSONParser {
 
 	    	skipWhiteSpace();
 
+				//this is the starting character of the value section of key:value
+				//it lets the program know how to handle the value
 	    	char beginningValue = input.charAt(index);
 
 	        if(beginningValue=='"'){
 	        	String value = getString();
 	        	//System.out.println("string value: " + value);
 	        	numEntries++;
-						if(data.strings.containsKey(key) || data.objects.containsKey()){
+
+						//checking for duplicate keys
+						if(data.strings.containsKey(key) || data.objects.containsKey(key)){
 							throw new IOException("duplicate key at index " + index);
 						}
 						else{
@@ -110,7 +116,7 @@ final class MyJSONParser implements JSONParser {
 	        	index++;
 	        //	System.out.println(input.substring(index));
 	        	numEntries++;
-						if(data.strings.containsKey(key) || data.objects.containsKey()){
+						if(data.strings.containsKey(key) || data.objects.containsKey(key)){
 							throw new IOException("duplicate key at index " + index);
 						}
 						else{
@@ -131,6 +137,9 @@ final class MyJSONParser implements JSONParser {
 	    return data;
 
   }
+
+
+	//obviously this is used to skip whitespace in the input
   public void skipWhiteSpace(){
 	 char next = input.charAt(index);
 	 while(Character.isWhitespace(next)){
@@ -139,6 +148,9 @@ final class MyJSONParser implements JSONParser {
 
   }
 
+
+//this is used to get a string when required
+//it also checks for string validity. Correctly escaped characters, etc.
   public String getString() throws IOException{
 	  int startIndex = index+1;
 	  String str="";
