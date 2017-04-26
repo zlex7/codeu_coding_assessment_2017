@@ -108,6 +108,7 @@ final class MyJSONParser implements JSONParser {
 							throw new IOException("duplicate key at index " + index);
 						}
 						else{
+							//I know I can use the setString() method I defined in MyJSON.java, but I like this because it's more explicit
 	        	data.strings.put(key,value);
 						}
 	        }
